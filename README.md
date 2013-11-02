@@ -1,10 +1,12 @@
 # SUSI API [LINK](http://susi.apphb.com)
 Ladies and gentleman, the moment you've all been waiting for - an API to our beloved SUSI
 
-## How it works?
+## How does it work?
 It's a simple RESTful web service that works on two steps:
+
 1. Send a `POST` request to `susi.apphb.com/api/login` containing the `Username` and the `Password` of your user. The server
 will then return a key (GUID) that you can use to reference the user later.
+
 2. Send another `POST` request containing your key (either to `susi.apphb.com/api/student` or `susi.apphb.com/api/courses`) to 
 get whatever info you need (`/api/courses` requires an extra parameter, scroll down to the example section).
 
@@ -23,9 +25,11 @@ When done with your user, send a `DELETE` request to `susi.apphb.com/api/login` 
 * 400 (Bad Request) - if your credentials are invalid
 * 502 (Bad Gateway) - if the service fails to reach SUSI
 * 503 (Service Unavailable) - reserved. Should never be returned, but is there to distinguish a random Internal Server Error (500) (which IIS returns by default on exception) from a business logic error
+
 ### /api/student
 * 401 (Unauthorized) - if the key you provided in the request doesn't exist. NOTE: Whenever the number of keys exceed 100 000, the last 10 000 are disposed. Due to that, there's a small chance that your key may be invalidated. If everyone disposes their keys (send a `DELETE` request) after they are done using them, no such thing will happen.
 * 502 (Bad Gateway) - if the service fails to reach SUSI
+
 ### /api/courses
 * 401 & 502 - as above 
 * 400 (Bad Request) - if the coursesType parameter is missing or is not in the interval [0, 2]
