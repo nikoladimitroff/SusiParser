@@ -172,6 +172,7 @@
     </Compile>
     <Compile Include="GlobalHost.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Models\KeyContainer.cs" />
     <Compile Include="Models\UserCredentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

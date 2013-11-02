@@ -17,8 +17,8 @@ namespace SusiParser
 	{
 		static void Main(string[] args)
 		{
-			string address = @"http://susi.apphb.com/api";
-			//string address = "http://localhost:61655/api";
+			//string address = @"http://susi.apphb.com/api";
+			string address = "http://localhost:61655/api";
 			string login = @"/login";
 			string student = @"/student";
 			string courses = @"/courses";
@@ -34,15 +34,15 @@ namespace SusiParser
 			using (Stream stream = response.GetResponseStream())
 			using (StreamReader reader = new StreamReader(stream))
 			{
-				key = reader.ReadToEnd();
+				key = reader.ReadToEnd().Replace("\"", string.Empty);
 			}
 
 			Console.WriteLine("Your key to the service is {0}", key);
 
-			response = CreateRequest("POST", address + student, key);
+			response = CreateRequest("POST", address + student, new { key = key });
 			ReadResponse(response, "STUDENT INFORMATION");
 
-			response = CreateRequest("POST", address + courses + "?coursesType=0", key);
+			response = CreateRequest("POST", address + courses + "?coursesType=0", new { key = key });
 			ReadResponse(response, "COURSE INFORMATION");
 		}
 
@@ -68,6 +68,7 @@ namespace SusiParser
 				using (var writer = new StreamWriter(requestStream))
 				{
 					writer.Write(JsonConvert.SerializeObject(data));
+					Debug.WriteLine(JsonConvert.SerializeObject(data));
 				}
 			}
 			return request.GetResponse();

@@ -1,4 +1,5 @@
 ﻿using SusiParser;
+using SusiParsingService.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -10,15 +11,15 @@ namespace SusiParsingService.Controllers
     public class CoursesController : IPAwareApiController
     {
         // Post api/courses
-        public IEnumerable<CourseInfo> Post([FromUri] int coursesType, [FromBody]string value)
+        public IEnumerable<CourseInfo> Post([FromUri] int coursesType, [FromBody] KeyContainer keyContainer)
 		{
 			if (!Enum.IsDefined(typeof(CoursesTakenType), coursesType))
 				throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Course Taken Type must be 0, 1 or 2"));
 
-			value = value.Replace("\"", string.Empty);
+			string key = keyContainer.Key.Replace("\"", string.Empty);
 
 			SusiParser.Parser parser;
-			if (GlobalHost.Instance.TryGetValue(value, out parser))
+			if (GlobalHost.Instance.TryGetValue(key, out parser))
 			{
 				try
 				{

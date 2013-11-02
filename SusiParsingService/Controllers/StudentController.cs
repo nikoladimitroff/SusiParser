@@ -1,4 +1,5 @@
 ﻿using SusiParser;
+using SusiParsingService.Models;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -8,12 +9,12 @@ namespace SusiParsingService.Controllers
     public class StudentController : IPAwareApiController
     {
         // POST api/student
-        public StudentInfo Post([FromBody]string value)
+        public StudentInfo Post([FromBody] KeyContainer keyContainer)
 		{
-			value = value.Replace("\"", string.Empty);
+			string key = keyContainer.Key.Replace("\"", string.Empty);
 			
 			SusiParser.Parser parser;
-			if (GlobalHost.Instance.TryGetValue(value, out parser))
+			if (GlobalHost.Instance.TryGetValue(key, out parser))
 			{
 				try
 				{

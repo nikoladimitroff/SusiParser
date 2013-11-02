@@ -57,7 +57,7 @@ POST - Response
 	HTTP/1.1 200 OK
 	Content-Type: text/json;charset=utf-8
 	Content-Length: 38
-	"c78abca3-5fa4-41cd-967b-0022281d806b"
+	{ key: "c78abca3-5fa4-41cd-967b-0022281d806b" }
 	
 DELETE - Request
 
@@ -65,7 +65,7 @@ DELETE - Request
 	Host: susi.apphb.com
 	Content-Type: application/json
 	Content-Length: 38
-	"c78abca3-5fa4-41cd-967b-0022281d806b"
+	{ key: "c78abca3-5fa4-41cd-967b-0022281d806b" }
 	
 DELETE - Response
 
@@ -80,7 +80,7 @@ Request
 	Host: susi.apphb.com
 	Content-Type: application/json
 	Content-Length: 38
-	"c78abca3-5fa4-41cd-967b-0022281d806b"
+	{ key: "c78abca3-5fa4-41cd-967b-0022281d806b" }
 	
 Response
 
@@ -108,7 +108,7 @@ Request
 	Host: susi.apphb.com
 	Content-Type: application/json
 	Content-Length: 38	
-	"c78abca3-5fa4-41cd-967b-0022281d806b"
+	{ key: "c78abca3-5fa4-41cd-967b-0022281d806b" }
 	
 Response
 
