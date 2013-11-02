@@ -40,58 +40,62 @@ Here's a .NET Console app [here](http://github.com/NikolaDimitroff/SusiParser/bl
 And here are a few sample requests/responses:
 ### /api/login
 Request
+
 	POST /api/login HTTP/1.1
 	Host: susi.apphb.com
 	Content-Type: application/json
 	Content-Length: 46
-
 	{ username: "username", password: "password" }
 	
 Response
+
 	HTTP/1.1 200 OK
 	Content-Type: text/json;charset=utf-8
 	Content-Length: 38
-	
 	"c78abca3-5fa4-41cd-967b-0022281d806b"
 	
 ### /api/student
 Request
+
 	POST /api/student HTTP/1.1
 	Host: susi.apphb.com
 	Content-Type: application/json
 	Content-Length: 38
-	
 	"c78abca3-5fa4-41cd-967b-0022281d806b"
 	
 Response
+
 	HTTP/1.1 200 OK
 	Content-Type: text/json;charset=utf-8
-	Content-Length: 141
-	
+	Content-Length: 141	
 	{"firstName":"Никола","middleName":"Димитров","lastName":"Димитров","facultyNumber":"61560","programme":"СИ(рб)","type":0,"year":2,"group":1}
 
 ### /api/courses	
 
 There's an extra parameter here - coursesType. It is a number in the interval [0, 2] and is equivalent to the [CourseTakenType enumeration](https://github.com/NikolaDimitroff/SusiParser/blob/master/SusiParser/CourseTakenType.cs)
 The parameter should be send in the URL i.e. `api/courses?coursesType=0`.
+
 Parameter values:	Parameter meanings:
+
 0					Return all courses
+
 1					Return only taken courses
+
 2					Return only not taken courses
 
 Request
+
 	POST /api/student?coursesType=1 HTTP/1.1
 	Host: susi.apphb.com
 	Content-Type: application/json
-	Content-Length: 38
-	
+	Content-Length: 38	
 	"c78abca3-5fa4-41cd-967b-0022281d806b"
 	
 Response
+
 	HTTP/1.1 200 OK
 	Content-Type: text/json;charset=utf-8
 	Content-Length: 1540
-	
 	[{"name":"Алгебра","teacher":"доц. д-р Пламен Николов Сидеров","grade":6.0,"isTaken":true,"isElective":false,"credits":7.0},{"name":"Анализ 1","teacher":"доц. д-р Владимир Димитров Бабев","grade":5.0,"isTaken":true,"isElective":false,"credits":7.0},{"name":"Английски език","teacher":"Десислава Иванова Гушева","grade":6.0,"isTaken":true,"isElective":false,"credits":2.0},{"name":"Дискретни структури 1","teacher":"доц. д-р Ангел Василев Дичев","grade":5.0,"isTaken":true,"isElective":false,"credits":7.0},{"name":"Увод в програмирането","teacher":"доц. д-р Александър Тодоров Григоров","grade":6.0,"isTaken":true,"isElective":false,"credits":5.5},{"name":"Анализ 2","teacher":"доц. д-р Владимир Димитров Бабев","grade":5.0,"isTaken":true,"isElective":false,"credits":7.0},{"name":"Геометрия","teacher":"доц. д-р Симеон Петров Замковой","grade":6.0,"isTaken":true,"isElective":false,"credits":7.0},{"name":"Дискретни структури 2","teacher":"доц. д-р Ангел Василев Дичев","grade":5.0,"isTaken":true,"isElective":false,"credits":6.0},{"name":"Компютърен английски език","teacher":"Десислава Иванова Гушева","grade":6.0,"isTaken":true,"isElective":false,"credits":2.0},{"name":"Обектно-ориентирано програмиране","teacher":"доц. д-р Александър Тодоров Григоров","grade":6.0,"isTaken":true,"isElective":false,"credits":5.5},{"name":"Спорт","teacher":"Липсва","grade":6.0,"isTaken":true,"isElective":false,"credits":4.0}]
 	
 ## Contacts
