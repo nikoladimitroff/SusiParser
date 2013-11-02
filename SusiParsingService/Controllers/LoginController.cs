@@ -27,7 +27,7 @@ namespace SusiParsingService.Controllers
 				}
 				else
 				{
-					var response = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Service unavailable");
+					var response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, "Service unavailable");
 					
 					throw new HttpResponseException(response);
 				}
@@ -38,7 +38,7 @@ namespace SusiParsingService.Controllers
 			}
 			catch (WebException)
 			{
-				throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Can't load data from susi"));
+				throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadGateway, "Can't load data from susi"));
 			}
         }
 

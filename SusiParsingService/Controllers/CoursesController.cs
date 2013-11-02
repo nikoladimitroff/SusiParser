@@ -11,8 +11,7 @@ namespace SusiParsingService.Controllers
     {
         // GET api/courses
         public IEnumerable<CourseInfo> Post([FromUri] int coursesType, [FromBody]string value)
-		{
-			
+		{			
 			if (!Enum.IsDefined(typeof(CoursesTakenType), coursesType))
 				throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Course Taken Type must be 0, 1 or 2"));
 
@@ -29,7 +28,7 @@ namespace SusiParsingService.Controllers
 				}
 				catch (WebException)
 				{
-					throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Can't load data from susi"));
+					throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadGateway, "Can't load data from susi"));
 				}
 			}
 			else

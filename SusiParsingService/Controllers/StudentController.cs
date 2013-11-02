@@ -23,7 +23,7 @@ namespace SusiParsingService.Controllers
 				}
 				catch (WebException)
 				{
-					throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Can't load data from susi"));
+					throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadGateway, "Can't load data from susi"));
 				}
 			}
 			else

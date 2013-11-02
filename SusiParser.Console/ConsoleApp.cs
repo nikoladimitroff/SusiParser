@@ -42,7 +42,7 @@ namespace SusiParser
 			response = CreateRequest("POST", address + student, key);
 			ReadResponse(response, "STUDENT INFORMATION");
 
-			response = CreateRequest("POST", address + courses + "?coursesType=2", key);
+			response = CreateRequest("POST", address + courses + "?coursesType=0", key);
 			ReadResponse(response, "COURSE INFORMATION");
 		}
 
