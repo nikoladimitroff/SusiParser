@@ -31,6 +31,7 @@ namespace SusiParsingService
 		public GlobalHost()
 		{
 			this.parsers = new ConcurrentDictionary<string, Parser>();
+			this.parserAccessDates = new ConcurrentDictionary<string, DateTime>();
 			this.Logger = new Logger(HostingEnvironment.MapPath("~/Log.html"));
 		}
 

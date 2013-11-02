@@ -17,7 +17,8 @@ namespace SusiParser
 	{
 		static void Main(string[] args)
 		{
-			string address = @"http://localhost:61655/api";
+			string address = @"http://susi.apphb.com/api";
+			//string address = "http://localhost:61655/api";
 			string login = @"/login";
 			string student = @"/student";
 			string courses = @"/courses";

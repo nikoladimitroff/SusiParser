@@ -27,7 +27,9 @@ namespace SusiParsingService.Controllers
 				}
 				else
 				{
-					throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Service unavailable"));
+					var response = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Service unavailable");
+					
+					throw new HttpResponseException(response);
 				}
 			}
 			catch (InvalidCredentialException)
