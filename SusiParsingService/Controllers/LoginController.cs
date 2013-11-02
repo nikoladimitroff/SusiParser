@@ -43,13 +43,16 @@ namespace SusiParsingService.Controllers
         }
 
 		// Delete api/login
-		public void Delete([FromBody] string key)
+		public HttpResponseMessage Delete([FromBody] string key)
 		{
 			key = key.Replace("\"", string.Empty);
 			if (GlobalHost.Instance.TryRemove(key))
 			{
 				GlobalHost.Instance.Logger.LogLogoutRequest(key, this.GetClientIp());
+
+				return Request.CreateResponse(HttpStatusCode.OK);
 			}
+			return Request.CreateResponse(HttpStatusCode.NotFound);
 		}
 
     }
