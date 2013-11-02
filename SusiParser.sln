@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SusiParser", "SusiParser\SusiParser.csproj", "{A25DD904-637A-4428-83BA-9F72E291A461}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SusiParsingService", "SusiParsingService\SusiParsingService.csproj", "{A7407689-4A0E-4786-92E7-D8ED45D5C684}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SusiParser.Console", "SusiParser.Console\SusiParser.Console.csproj", "{FAC6D56D-35B5-48A9-8225-DD493FBD32F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +17,14 @@ Global
 		{A25DD904-637A-4428-83BA-9F72E291A461}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A25DD904-637A-4428-83BA-9F72E291A461}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A25DD904-637A-4428-83BA-9F72E291A461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7407689-4A0E-4786-92E7-D8ED45D5C684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7407689-4A0E-4786-92E7-D8ED45D5C684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7407689-4A0E-4786-92E7-D8ED45D5C684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7407689-4A0E-4786-92E7-D8ED45D5C684}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAC6D56D-35B5-48A9-8225-DD493FBD32F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAC6D56D-35B5-48A9-8225-DD493FBD32F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAC6D56D-35B5-48A9-8225-DD493FBD32F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC6D56D-35B5-48A9-8225-DD493FBD32F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

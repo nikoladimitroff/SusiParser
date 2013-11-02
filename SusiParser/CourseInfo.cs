@@ -9,7 +9,7 @@ namespace SusiParser
 	/// <summary>
 	/// Holds information about a single course.
 	/// </summary>
-	struct CourseInfo
+	public struct CourseInfo
 	{
 		public string CourseName;
 		public string Teacher;

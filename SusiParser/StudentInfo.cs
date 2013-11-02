@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace SusiParser
 {
-	enum StudentType
+	public enum StudentType
 	{
 		Bachelor,
 		Master,
@@ -16,7 +11,7 @@ namespace SusiParser
 	/// <summary>
 	/// Holds information about a student. NOTE: In case the student has dropped but still has a SUSI account, his year and group will be 0
 	/// </summary>
-	struct StudentInfo
+	public struct StudentInfo
 	{
 		public string FirstName;
 		public string MiddleName;
