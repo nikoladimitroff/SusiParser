@@ -67,13 +67,15 @@ namespace SusiParsingService
 			return false;
 		}
 
-		public void TryRemove(string key)
+		public bool TryRemove(string key)
 		{
 			DateTime dummyDateTime;
 			Parser dummyParser;
 
-			this.parsers.TryRemove(key, out dummyParser);
+			bool result = this.parsers.TryRemove(key, out dummyParser);
 			this.parserAccessDates.TryRemove(key, out dummyDateTime);
+
+			return result;
 		}
 	}
 }

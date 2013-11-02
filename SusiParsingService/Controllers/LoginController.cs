@@ -46,7 +46,10 @@ namespace SusiParsingService.Controllers
 		public void Delete([FromBody] string key)
 		{
 			key = key.Replace("\"", string.Empty);
-			GlobalHost.Instance.TryRemove(key);
+			if (GlobalHost.Instance.TryRemove(key))
+			{
+				GlobalHost.Instance.Logger.LogLogoutRequest(key, this.GetClientIp());
+			}
 		}
 
     }

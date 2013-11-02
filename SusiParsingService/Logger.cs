@@ -32,5 +32,10 @@ namespace SusiParsingService
 		{
 			writer.WriteLine("[{0}] STUDENT: Request about student information served to address [{1}]", DateTime.UtcNow, ip);
 		}
+
+		public void LogLogoutRequest(string key, string ip)
+		{
+			writer.WriteLine("[{0}] LOGOFF: User logged off and key [{1}] disposed due to request from [{2}]", DateTime.UtcNow, key, ip);
+		}
 	}
 }

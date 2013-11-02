@@ -11,13 +11,6 @@ using System.Web;
 
 namespace SusiParser
 {
-	public enum CoursesTakenType
-	{
-		All,
-		Taken,
-		NotTaken
-	}
-
 	/// <summary>
 	/// A class mighty enought to break trough SUSI, hooray!
 	/// </summary>

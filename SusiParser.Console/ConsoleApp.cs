@@ -17,8 +17,8 @@ namespace SusiParser
 	{
 		static void Main(string[] args)
 		{
-			string address = @"http://susi.apphb.com/api";
-			//string address = "http://localhost:61655/api";
+			//string address = @"http://susi.apphb.com/api";
+			string address = "http://localhost:61655/api";
 			string login = @"/login";
 			string student = @"/student";
 			string courses = @"/courses";
@@ -29,7 +29,7 @@ namespace SusiParser
 			Console.Write("Password: ");
 			string password = Console.ReadLine();
 
-			WebResponse response = CreateRequest("POST", address + login, new { Username = username, Password = password });
+			WebResponse response = CreateRequest("POST", address + login, new { username = username, password = password });
 			string key;
 			using (Stream stream = response.GetResponseStream())
 			using (StreamReader reader = new StreamReader(stream))
@@ -54,7 +54,7 @@ namespace SusiParser
 			{
 				info = reader.ReadToEnd();
 			}
-			Console.WriteLine("{0}{1}{0}r\n{2}", new string('*', 10), title, info);
+			Console.WriteLine("{0}{1}{0}\r\n{2}", new string('*', 10), title, info);
 		}
 
 		private static WebResponse CreateRequest(string method, string address, object data)
@@ -64,7 +64,6 @@ namespace SusiParser
 			request.ContentType = "application/json";
 			if (method == "POST")
 			{
-
 				using (var requestStream = request.GetRequestStream())
 				using (var writer = new StreamWriter(requestStream))
 				{

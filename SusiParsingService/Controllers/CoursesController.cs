@@ -9,9 +9,9 @@ namespace SusiParsingService.Controllers
 {
     public class CoursesController : IPAwareApiController
     {
-        // GET api/courses
+        // Post api/courses
         public IEnumerable<CourseInfo> Post([FromUri] int coursesType, [FromBody]string value)
-		{			
+		{
 			if (!Enum.IsDefined(typeof(CoursesTakenType), coursesType))
 				throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Course Taken Type must be 0, 1 or 2"));
 
