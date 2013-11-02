@@ -16,7 +16,7 @@ namespace SusiParsingService.Controllers
 			if (!Enum.IsDefined(typeof(CoursesTakenType), coursesType))
 				throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Course Taken Type must be 0, 1 or 2"));
 
-			string key = keyContainer.Key.Replace("\"", string.Empty);
+			string key = keyContainer.GetNormalizedKey();
 
 			SusiParser.Parser parser;
 			if (GlobalHost.Instance.TryGetValue(key, out parser))

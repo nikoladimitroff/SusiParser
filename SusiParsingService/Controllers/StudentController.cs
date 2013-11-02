@@ -2,6 +2,7 @@
 using SusiParsingService.Models;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web.Http;
 
 namespace SusiParsingService.Controllers
@@ -11,7 +12,7 @@ namespace SusiParsingService.Controllers
         // POST api/student
         public StudentInfo Post([FromBody] KeyContainer keyContainer)
 		{
-			string key = keyContainer.Key.Replace("\"", string.Empty);
+			string key = keyContainer.GetNormalizedKey();
 			
 			SusiParser.Parser parser;
 			if (GlobalHost.Instance.TryGetValue(key, out parser))
