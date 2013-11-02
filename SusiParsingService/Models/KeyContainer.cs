@@ -11,7 +11,7 @@ namespace SusiParsingService.Models
 
 		public string GetNormalizedKey()
 		{
-			return Regex.Replace(this.Key, @"""|'", string.Empty);
+			return Regex.Replace(this.Key, "\"|\'", string.Empty);
 		}
 	}
 }
