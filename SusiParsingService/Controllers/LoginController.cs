@@ -43,9 +43,9 @@ namespace SusiParsingService.Controllers
         }
 
 		// Delete api/login
-		public HttpResponseMessage Delete([FromBody] string key)
+		public HttpResponseMessage Delete([FromBody] KeyContainer keyContainer)
 		{
-			key = key.Replace("\"", string.Empty);
+			string key = keyContainer.Key.Replace("\"", string.Empty);
 			if (GlobalHost.Instance.TryRemove(key))
 			{
 				GlobalHost.Instance.Logger.LogLogoutRequest(key, this.GetClientIp());
