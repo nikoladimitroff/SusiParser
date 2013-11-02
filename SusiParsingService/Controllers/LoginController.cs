@@ -10,18 +10,19 @@ using System.Web.Http;
 
 namespace SusiParsingService.Controllers
 {
-    public class LoginController : ApiController
+    public class LoginController : IPAwareApiController
     {
         // POST api/login
         public string Post([FromBody] UserCredentials credentials)
         {
 			string key = Guid.NewGuid().ToString();
-			SusiParser.SusiParser parser = new SusiParser.SusiParser();
+			SusiParser.Parser parser = new SusiParser.Parser();
 			try 
 			{	        
 				parser.Login(credentials.Username, credentials.Password);
 				if (GlobalHost.Instance.TryAdd(key, parser))
 				{
+					GlobalHost.Instance.Logger.LogLoginRequest(credentials.Username, this.GetClientIp());
 					return key;
 				}
 				else
@@ -38,6 +39,13 @@ namespace SusiParsingService.Controllers
 				throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Can't load data from susi"));
 			}
         }
+
+		// Delete api/login
+		public void Delete([FromBody] string key)
+		{
+			key = key.Replace("\"", string.Empty);
+			GlobalHost.Instance.TryRemove(key);
+		}
 
     }
 }

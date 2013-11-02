@@ -7,22 +7,24 @@ using System.Web.Http;
 
 namespace SusiParsingService.Controllers
 {
-    public class CoursesController : ApiController
+    public class CoursesController : IPAwareApiController
     {
         // GET api/courses
         public IEnumerable<CourseInfo> Post([FromUri] int coursesType, [FromBody]string value)
 		{
+			
 			if (!Enum.IsDefined(typeof(CoursesTakenType), coursesType))
 				throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Course Taken Type must be 0, 1 or 2"));
 
 			value = value.Replace("\"", string.Empty);
 
-			SusiParser.SusiParser parser;
+			SusiParser.Parser parser;
 			if (GlobalHost.Instance.TryGetValue(value, out parser))
 			{
 				try
 				{
 					IEnumerable<CourseInfo> info = parser.GetCourses((CoursesTakenType) coursesType);
+					GlobalHost.Instance.Logger.LogCoursesRequest(this.GetClientIp(), (CoursesTakenType)coursesType);
 					return info;
 				}
 				catch (WebException)
