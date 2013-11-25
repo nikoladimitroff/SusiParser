@@ -17,11 +17,12 @@ namespace SusiParser
 	{
 		static void Main(string[] args)
 		{
-			string address = @"http://susi.apphb.com/api";
-			//string address = "http://localhost:61655/api";
+			//string address = @"http://susi.apphb.com/api";
+			string address = "http://localhost:61655/api";
 			string login = @"/login";
 			string student = @"/student";
 			string courses = @"/courses";
+			string roles = @"/roles";
 
 			Console.WriteLine("Enter your credentials");
 			Console.Write("Username: ");
@@ -39,11 +40,18 @@ namespace SusiParser
 
 			Console.WriteLine("Your key to the service is {0}", key);
 
+			response = CreateRequest("POST", address + roles, new { key = key });
+			ReadResponse(response, "ROLES POST");
+
+			response = CreateRequest("PUT", address + roles + "?roleIndex=0", new { key = key });
+			ReadResponse(response, "ROLES PUT");
+
 			response = CreateRequest("POST", address + student, new { key = key });
 			ReadResponse(response, "STUDENT INFORMATION");
 
 			response = CreateRequest("POST", address + courses + "?coursesType=0", new { key = key });
 			ReadResponse(response, "COURSE INFORMATION");
+
 		}
 
 		private static void ReadResponse(WebResponse response, string title)
@@ -62,7 +70,7 @@ namespace SusiParser
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(address);
 			request.Method = method;
 			request.ContentType = "application/json";
-			if (method == "POST")
+			//if (method == "POST")
 			{
 				using (var requestStream = request.GetRequestStream())
 				using (var writer = new StreamWriter(requestStream))

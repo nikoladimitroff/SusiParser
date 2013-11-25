@@ -28,11 +28,9 @@ namespace SusiParsingService.Controllers
 					throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadGateway, "Can't load data from susi"));
 				}
 			}
-			else
-			{
-				throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "No such key / key expired "));
-			}
 
+			// If the key was not found
+			throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "No such key / key expired "));
         }
     }
 }

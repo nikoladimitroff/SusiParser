@@ -19,13 +19,16 @@ When done with your user, send a `DELETE` request to `susi.apphb.com/api/login` 
 * There's a log file that logs some information about logging in and out and requesting information at [http://susi.apphb.com/log.html](http://susi.apphb.com/log.html)
 * There are a number of different errors that may arise when using the service. Check out [error section](README.md#errors)
 * The service returns the structures [StudentInfo](http://github.com/NikolaDimitroff/SusiParser/blob/master/SusiParser/StudentInfo.cs)/[CourseInfo](http://github.com/NikolaDimitroff/SusiParser/blob/master/SusiParser/CourseInfo.cs) serialized as JSON/XML. Check out [example response section](README.md#examples) for more information.
+* The Roles Controller isn't documented yet (/api/roles). // MUST SHOULD DO
 
 ## Errors
 ### /api/login
 Post request errors:
+* 300 (Ambiguous) - user has multiple roles. Use /api/roles to select a role. Only returned if the request is to /api/login?selectFirstRole=false
 * 400 (Bad Request) - your credentials are invalid
 * 502 (Bad Gateway) - the service failed to reach SUSI
 * 503 (Service Unavailable) - reserved. Should never be returned, but is there to distinguish a random Internal Server Error (500) (which IIS returns by default on exception) from a business logic error
+
 Delete request errors:
 * 404 (Not Found) - key has expired / doesn't exist.
 

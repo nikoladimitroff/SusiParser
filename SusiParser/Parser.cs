@@ -11,6 +11,14 @@ using System.Web;
 
 namespace SusiParser
 {
+	public enum LoginResult
+	{
+		UnknownError,
+		InvalidCredentials,
+		MultipleRoles,
+		Success
+	}
+
 	/// <summary>
 	/// A class mighty enought to break trough SUSI, hooray!
 	/// </summary>
@@ -18,10 +26,11 @@ namespace SusiParser
 	{
 		static class SusiPages
 		{
-			public static string SusiAddress = @"https://susi.uni-sofia.bg";
-			public static string LoginPageAddress = @"https://susi.uni-sofia.bg/ISSU/forms/Login.aspx";
-			public static string HomePageAddress = @"https://susi.uni-sofia.bg/ISSU/forms/students/home.aspx";
-			public static string ReportExamsAddress = @"https://susi.uni-sofia.bg/ISSU/forms/students/ReportExams.aspx";
+			public static string SusiRoot = @"https://susi.uni-sofia.bg";
+			public static string Login = @"https://susi.uni-sofia.bg/ISSU/forms/Login.aspx";
+			public static string Home = @"https://susi.uni-sofia.bg/ISSU/forms/students/home.aspx";
+			public static string ReportExams = @"https://susi.uni-sofia.bg/ISSU/forms/students/ReportExams.aspx";
+			public static string Roles = @"https://susi.uni-sofia.bg/ISSU/forms/roles.aspx";
 		}
 
 		// Let the magic begin!
@@ -29,13 +38,27 @@ namespace SusiParser
 		{
 			public static string NotTakenCoursesFlag = "&Report_Exams1%24chkNotTaken=on";
 			public static string TakenCoursesFlag = "&Report_Exams1%24chkTaken=on";
-			public static string FormattedHiddenFields = "__EVENTTARGET=Report_Exams1%24btnReportExams&__EVENTARGUMENT=&__VSTATE={0}&__VIEWSTATE=&__EVENTVALIDATION=%2FwEWGAL%2BraDpAgK3pdr8BQKN%2BNnHCgKJ7OiyDgL77521DgLy1aS1CQK%2FqPbTAQLVh87yAgLInunZCAKtla77CAL%2BsbCuCgKd6OrBDQKOiLS8DALkxb3FBwKOy6myDQLrn7D%2BBgKmzenZCALztLy4DgKTxe2tBwLHieKTBgKS4YnZCwKu3dGoAQKZ3sM%2BAt%2FH5N8HqzstQIPHe%2F5TQABqakO68cYBFzo%3D";
-			public static string HardcodedHiddenFields = "__EVENTTARGET=Report_Exams1%24btnReportExams&__EVENTARGUMENT=&__VSTATE=eJz7z8ifws%2fKZWhsamBhYWBgYsmfIsaUhkKIMDHyizHJsYdlFmcm5aRmpDAxA%2fnyDEAGK0gNUBokzxKSWlGSmpLCxI4QlGcECXCiC3CjC%2fDCDORHlxGEyQjzQ1kpALbbHB0%3d&__VIEWSTATE=&Report_Exams1%24chkTaken=on&__EVENTVALIDATION=%2FwEWGAL%2BraDpAgK3pdr8BQKN%2BNnHCgKJ7OiyDgL77521DgLy1aS1CQK%2FqPbTAQLVh87yAgLInunZCAKtla77CAL%2BsbCuCgKd6OrBDQKOiLS8DALkxb3FBwKOy6myDQLrn7D%2BBgKmzenZCALztLy4DgKTxe2tBwLHieKTBgKS4YnZCwKu3dGoAQKZ3sM%2BAt%2FH5N8HqzstQIPHe%2F5TQABqakO68cYBFzo%3D";
+			public static string FormattedExamFormData = "__EVENTTARGET=Report_Exams1%24btnReportExams&__EVENTARGUMENT=&__VSTATE={0}&__VIEWSTATE=&__EVENTVALIDATION=%2FwEWGAL%2BraDpAgK3pdr8BQKN%2BNnHCgKJ7OiyDgL77521DgLy1aS1CQK%2FqPbTAQLVh87yAgLInunZCAKtla77CAL%2BsbCuCgKd6OrBDQKOiLS8DALkxb3FBwKOy6myDQLrn7D%2BBgKmzenZCALztLy4DgKTxe2tBwLHieKTBgKS4YnZCwKu3dGoAQKZ3sM%2BAt%2FH5N8HqzstQIPHe%2F5TQABqakO68cYBFzo%3D";
+			public static string HardcodedExamFormData = "__EVENTTARGET=Report_Exams1%24btnReportExams&__EVENTARGUMENT=&__VSTATE=eJz7z8ifws%2fKZWhsamBhYWBgYsmfIsaUhkKIMDHyizHJsYdlFmcm5aRmpDAxA%2fnyDEAGK0gNUBokzxKSWlGSmpLCxI4QlGcECXCiC3CjC%2fDCDORHlxGEyQjzQ1kpALbbHB0%3d&__VIEWSTATE=&Report_Exams1%24chkTaken=on&__EVENTVALIDATION=%2FwEWGAL%2BraDpAgK3pdr8BQKN%2BNnHCgKJ7OiyDgL77521DgLy1aS1CQK%2FqPbTAQLVh87yAgLInunZCAKtla77CAL%2BsbCuCgKd6OrBDQKOiLS8DALkxb3FBwKOy6myDQLrn7D%2BBgKmzenZCALztLy4DgKTxe2tBwLHieKTBgKS4YnZCwKu3dGoAQKZ3sM%2BAt%2FH5N8HqzstQIPHe%2F5TQABqakO68cYBFzo%3D";
 			public static string FormattedLoginFormData = "__EVENTTARGET=&__EVENTARGUMENT=&__VSTATE=eJz7z8ifws%252fKZWhsamBhYWBgYsmfIsaUhkKIMDHyizHJsYdlFmcm5aRmpDAxA%252fnyDEAGK0gNUBokzxKSWlGSmpLCxI4QlGcECXCiC3CjC%252fDCDORHlxGEyQjzQ1kpALbbHB0%253d&__VIEWSTATE=&txtUserName={0}&txtPassword={1}&btnSubmit=%D0%92%D0%BB%D0%B5%D0%B7&__EVENTVALIDATION=%2FwEWBAL%2BraDpAgKl1bKzCQK1qbSRCwLCi9reA3ZPH%2F0OXuiqks41bB%2BF30DwDzP9";
+			public static string FormattedRolesFormData = "__EVENTTARGET=rptRoles%24ctl01%24lblRoleName&__EVENTARGUMENT=&__VSTATE=eJytkcFKw0AQht2todVQt2Kbg4c0nsWSBJreNRR68SS9luhsayDVgwnozcY%252big%252bQg0Kppr7C7BPpLklRchaW3Zn%252fW%252baf3fkmDJimnzmOa9uu6%252fUHDAxKpWo0pipUW1vmBjXr4%252fAhvI74LdCazLs7MtDK64rvXvHHmAPQ%252bq%252fYJUrYqwp6VWhuC7IqOdySI1ZGIHGLGQ2z6QdxoEyHIY9A04fBTRLFT5fBnJsHio2DKOEF3C%252fhZOSb%252buRE0fP75A5mqmKrQ3x8xQzX4gU%252fRIrvIrXwCzcWfmKm8vJc4RozC1dyYS6WuBHPf0mHaE5%252fYDvt0xqZGWQKlBYP0f6lPBQfr%252fofxXx%252bIfuPKSnHJSdVWB2LhUil0Zssm0sjsexh3vOcvmcD%252fABPBa17&__VIEWSTATE=&rptRoles%24ctl01%24hiddenUserID={0}&rptRoles%24ctl01%24hiddenRoleID={1}&__EVENTVALIDATION=%2FwEWBAL%2BraDpAgLvlvKEBgKK6ZygDwLV4LqQASsekn%2FRn6nIW18p6D9a6rBO2Hjd";
 		}
 
-		public CookieContainer Cookies = new CookieContainer();
+		private CookieContainer Cookies = new CookieContainer();
+		
+		/// <summary>
+		/// Gets or sets all roles the user is in.
+		/// </summary>
+		public StudentRole[] Roles { get; private set; }
 
+		/// <summary>
+		/// Gets or sets a value indicating whether the user has chosen his role already.
+		/// </summary>
+		public bool HasSelectedRole { get; private set; }
+
+		/// <summary>
+		/// Holds the value of _VSTATE hidden field
+		/// </summary> 
 		private string vstate = string.Empty;
 
 		public Parser()
@@ -44,6 +67,11 @@ namespace SusiParser
 			HtmlNode.ElementsFlags.Remove("form");
 		}
 
+		#region Utilities
+
+		/// <summary>
+		/// Sends a web request to the specified address with the given data as body content
+		/// </summary>
 		private WebResponse SendRequest(string address, string data)
 		{
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(address);
@@ -56,6 +84,19 @@ namespace SusiParser
 				writer.Write(data);
 			}
 			return request.GetResponse();
+		}
+
+		/// <summary>
+		/// Reads a web response and returns its content
+		/// </summary>
+		private static string ReadResponseToEnd(WebResponse response)
+		{
+			using (var responseStream = response.GetResponseStream())
+			using (var reader = new StreamReader(responseStream))
+			{
+				var result = reader.ReadToEnd();
+				return result;
+			}
 		}
 
 		/// <summary>
@@ -73,17 +114,15 @@ namespace SusiParser
 			this.vstate = node.Attributes["value"].Value.Trim();
 		}
 
+		#endregion
+
+		#region PageDownloaders
+
 		private string GetHomePage()
 		{
 			// As above, send a post request with predefined values for the hidden fields
-			WebResponse response = this.SendRequest(SusiPages.HomePageAddress, HiddenFieldValues.HardcodedHiddenFields);
-
-			using (var responseStream = response.GetResponseStream())
-			using (var reader = new StreamReader(responseStream))
-			{
-				var result = reader.ReadToEnd();
-				return result;
-			}
+			WebResponse response = this.SendRequest(SusiPages.Home, HiddenFieldValues.HardcodedExamFormData);
+			return ReadResponseToEnd(response);
 		}
 
 		private string GetExamPage(CoursesTakenType coursesType, bool shouldRecurse = true)
@@ -91,7 +130,7 @@ namespace SusiParser
 			// AWFUL CODE, BLAME SUSI
 
 			// Send a post request with predefined values of the hidden fields
-			string data = string.Format(HiddenFieldValues.FormattedHiddenFields, HttpUtility.UrlEncode(this.vstate));
+			string data = string.Format(HiddenFieldValues.FormattedExamFormData, HttpUtility.UrlEncode(this.vstate));
 			switch (coursesType)
 			{
 				case CoursesTakenType.NotTaken:
@@ -105,7 +144,7 @@ namespace SusiParser
 					break;
 
 			}
-			WebResponse response = this.SendRequest(SusiPages.ReportExamsAddress, data);
+			WebResponse response = this.SendRequest(SusiPages.ReportExams, data);
 
 			// Since SUSI sucks, in order to get the courses page we first need the value of a special hidden field - _VSTATE.
 			// Unfortunately, _VSTATE has different value on other pages, so first need to get its value from the current response,
@@ -117,37 +156,58 @@ namespace SusiParser
 			}
 
 			// If everything else is ok return the whole page
-			using (var responseStream = response.GetResponseStream())
-			using (var reader = new StreamReader(responseStream))
-			{
-				var result = reader.ReadToEnd();
-				return result;
-			}
+			return ReadResponseToEnd(response);
 		}
 
-		/// <summary>
-		/// Logs the user in SUSI.
-		/// </summary>
-		/// <param name="username">The username in Susi</param>
-		/// <param name="password">The password in Susi</param>
-		public void Login(string username, string password)
+		public string GetRolesPage()
 		{
+			// As above, send a post request with predefined values for the hidden fields
+			WebResponse response = this.SendRequest(SusiPages.Roles, HiddenFieldValues.HardcodedExamFormData);
+			return ReadResponseToEnd(response);
+		}
+
+		#endregion
+
+		#region InformationExtractors
+
+		private IEnumerable<StudentRole> GetRoles(string pageContent)
+		{
+			if (this.Cookies.Count == 0)
+			{
+				throw new InvalidOperationException("You must login prior to getting info from SUSI");
+			}
+#if !DEBUG
 			try
 			{
-				ServicePointManager.Expect100Continue = false;
+#endif
+			// Get the exam page and parse it
+			HtmlDocument document = new HtmlDocument();
+			document.LoadHtml(pageContent);
 
-				WebResponse response = this.SendRequest(SusiPages.LoginPageAddress, string.Format(HiddenFieldValues.FormattedLoginFormData, username, password));
-				// If susi has returned the same page, the credentials are wrong
-				if (response.ResponseUri.ToString() == SusiPages.LoginPageAddress)
-				{
-					throw new InvalidCredentialException("Invalid credentials");
-				}
-				this.ExtractVstate(response);
-			}
-			catch (WebException e)
+			// Another magical xpath, don't try to optimize it
+			string xpath = @"/html/body/form/table/tr/td/table/tr[not(@class)]/td[@class=""simpleText"" and * and not(div)]";
+			HtmlNodeCollection nodes = document.DocumentNode.SelectNodes(xpath);
+			List<StudentRole> roles = new List<StudentRole>();
+			foreach (HtmlNode node in nodes)
 			{
-				throw new WebException("Can't log into SUSI. (Most likely SUSI can't be reached due to downtime)", e);
+				string[] nodeText = node.SelectSingleNode("a").InnerText.Trim().Split(new string[] { "ф.н." }, StringSplitOptions.RemoveEmptyEntries);
+				string roleText = nodeText[0];
+				string facultyNumber = nodeText.Length > 1 ? nodeText[1].Trim() : string.Empty;
+				int hiddenUserId = Int32.Parse(node.SelectSingleNode(@"input[@id=""rptRoles_ctl01_hiddenUserID""]").Attributes["value"].Value.Trim());
+				int hiddenRoleId = Int32.Parse(node.SelectSingleNode(@"input[@id=""rptRoles_ctl01_hiddenRoleID""]").Attributes["value"].Value.Trim());
+
+				roles.Add(new StudentRole(roleText, facultyNumber, hiddenUserId, hiddenRoleId));
 			}
+
+			return roles;
+#if !DEBUG
+			}
+			catch (Exception e)
+			{
+				// In case something failed, throw a new exception
+				throw new WebException("Can't load data from SUSI", e);
+			}
+#endif
 		}
 
 		/// <summary>
@@ -250,6 +310,20 @@ namespace SusiParser
 			string xpath = @"html/body/form/table[3]/tr/td[2]";
 			HtmlNode node = document.DocumentNode.SelectSingleNode(xpath);
 
+			return ExtractStudentInfo(node);
+
+#if !DEBUG
+			}
+			catch (Exception e)
+			{
+				// In case something failed, throw a new exception
+				throw new WebException("Can't load data from SUSI", e);
+			}
+#endif
+		}
+
+		private static StudentInfo ExtractStudentInfo(HtmlNode node)
+		{
 			// That table cell we just selected has a quite an interesting structure:
 			// - some of the text is plain text put right inside the cell
 			// - other parts are inside a span
@@ -294,15 +368,64 @@ namespace SusiParser
 			info.Type = type;
 
 			return info;
-
-#if !DEBUG
-			}
-			catch (Exception e)
-			{
-				// In case something failed, throw a new exception
-				throw new WebException("Can't load data from SUSI", e);
-			}
-#endif
 		}
+
+		#endregion
+
+		/// <summary>
+		/// Logs the user in SUSI.
+		/// </summary>
+		/// <param name="username">The username in Susi</param>
+		/// <param name="password">The password in Susi</param>
+		public LoginResult Login(string username, string password)
+		{
+			try
+			{
+				ServicePointManager.Expect100Continue = false;
+
+				WebResponse response = this.SendRequest(SusiPages.Login, string.Format(HiddenFieldValues.FormattedLoginFormData, username, password));
+				// If susi has returned the same page, the credentials are wrong
+				if (response.ResponseUri.ToString() == SusiPages.Login)
+				{
+					return LoginResult.InvalidCredentials;
+				}
+				if (response.ResponseUri.ToString() == SusiPages.Roles)
+				{
+					// Multiple roles
+					string responseContent = ReadResponseToEnd(response);
+					this.Roles = this.GetRoles(responseContent).ToArray();
+
+					return LoginResult.MultipleRoles;	
+				}
+				this.ExtractVstate(response);
+
+				// If we've reached here, there's only one role but download it anyway
+				this.Roles = this.GetRoles(this.GetRolesPage()).ToArray();
+				this.HasSelectedRole = true;
+				return LoginResult.Success;
+			}
+			catch (WebException e)
+			{
+				return LoginResult.UnknownError;
+			}
+		}
+
+		public void ChangeRole(StudentRole role)
+		{
+			for (int i = 0; i < this.Roles.Length; i++)
+			{
+				// Find the same role in our collection since deserialization may have ommited IDs
+				if (this.Roles[i].RoleText == role.RoleText && this.Roles[i].FacultyNumber == role.FacultyNumber)
+				{
+					var chosenRole = this.Roles[i];
+					this.SendRequest(SusiPages.Roles, string.Format(HiddenFieldValues.FormattedRolesFormData, chosenRole.HiddenUserId, chosenRole.HiddenRoleId));
+					this.HasSelectedRole = true;
+					return;
+				}
+			}
+
+			throw new ArgumentException("The user is in no such role", "role");
+		}
+
 	}
 }

@@ -45,26 +45,22 @@ namespace SusiParsingService
 			return false;
 		}
 
-		public bool TryAdd(string key, Parser parser)
+		public void Add(string key, Parser parser)
 		{
-			if (this.parsers.TryAdd(key, parser))
+			this.parsers[key] = parser;
+			this.parserAccessDates[key] = DateTime.UtcNow;
+			// If we exceed the maximum amount of parsers, remove the oldest ones 
+			if (this.parsers.Count > GlobalHost.MaxParsers)
 			{
-				this.parserAccessDates[key] = DateTime.UtcNow;
-				// If we exceed the maximum amount of parsers, remove the oldest ones 
-				if (this.parsers.Count > GlobalHost.MaxParsers)
+				var toBeRemoved = this.parserAccessDates.OrderBy(x => x.Value).Take(GlobalHost.ParsersToRemoveOnOverflow).ToList();
+				DateTime dummyDateTime;
+				Parser dummyParser;
+				foreach (var entry in toBeRemoved)
 				{
-					var toBeRemoved = this.parserAccessDates.OrderBy(x => x.Value).Take(GlobalHost.ParsersToRemoveOnOverflow).ToList();
-					DateTime dummyDateTime;
-					Parser dummyParser;
-					foreach (var entry in toBeRemoved)
-					{
-						this.parserAccessDates.TryRemove(entry.Key, out dummyDateTime);
-						this.parsers.TryRemove(entry.Key, out dummyParser);
-					}
+					this.parserAccessDates.TryRemove(entry.Key, out dummyDateTime);
+					this.parsers.TryRemove(entry.Key, out dummyParser);
 				}
-				return true;
 			}
-			return false;
 		}
 
 		public bool TryRemove(string key)

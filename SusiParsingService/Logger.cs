@@ -16,7 +16,7 @@ namespace SusiParsingService
 			writer.AutoFlush = true;
 			writer.WriteLine("<pre></pre>");
 			writer.BaseStream.Seek("<pre>".Length, SeekOrigin.Begin);
-			writer.Write("[{0}] SERVICE STARTED", DateTime.UtcNow);
+			writer.WriteLine("[{0}] SERVICE STARTED", DateTime.UtcNow);
 		}
 
 		public void LogLoginRequest(string username, string ip)
