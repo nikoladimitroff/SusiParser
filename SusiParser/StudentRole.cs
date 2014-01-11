@@ -22,7 +22,7 @@ namespace SusiParser
 		public StudentRole(string roleText, string facultyNumber, int userId, int roleId) : 
 			this()
 		{
-			this.RoleText = RoleText;
+			this.RoleText = roleText;
 			this.FacultyNumber = facultyNumber;
 			this.HiddenUserId = userId;
 			this.HiddenRoleId = roleId;
